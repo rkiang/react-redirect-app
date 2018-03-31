@@ -1,4 +1,4 @@
-import React from "react";
+import React , { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -6,6 +6,8 @@ import {
   Redirect,
   withRouter
 } from "react-router-dom";
+
+const url = 'http://localhost:5000/api';
 
 const AuthTest = () => (
   <Router>
@@ -52,8 +54,8 @@ const AuthButton = withRouter(
         </button>
       </p>
     ) : (
-      <p>You are not logged in.</p>
-    )
+        <p>You are not logged in.</p>
+      )
 );
 
 const PrivateRoute = ({ component: Component, ...rest }) => (
@@ -63,13 +65,13 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
       userAuth.isAuthenticated ? (
         <Component {...props} />
       ) : (
-        <Redirect
-          to={{
-            pathname: "/login",
-            state: { from: props.location }
-          }}
-        />
-      )
+          <Redirect
+            to={{
+              pathname: "/login",
+              state: { from: props.location }
+            }}
+          />
+        )
     }
   />
 );
@@ -77,16 +79,67 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 const Public = () => <h3>Public</h3>;
 const Protected = () => <h3>Protected</h3>;
 
-class Login extends React.Component {
-  state = {
-    redirectToReferrer: false
-  };
+class Login extends Component {
+  // state = {
+  //   redirectToReferrer: false;
+  // };
+  constructor() {
+    super();
+    this.state = {
+      users: [],
+      username: '',
+      password: '',
+      redirectToReferrer: false,
+    }
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+  }
 
   login = () => {
-    userAuth.authenticate(() => {
+    userAuth.authenticate((event) => {
+      event.preventDefault();
+      const user_data = {
+        username: this.state.username,
+        password: this.state.password,
+      }
+      const request = new Request(`${url}/login`, {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify(user_data)
+      });
+      fetch(request)
+        .then(response => {
+          console.log(`post was successful: ${response}`);
+          this.getUsers();
+          this.setState({
+            username: '',
+            password: '',
+          })
+          if (response.status === 200) {
+            console.log(`success:  ${response}`);
+            this.props.history.push('/home');
+          } else {
+            console.log(`failure error: ${response}`);
+          }
+        },
+      ).catch(error => console.log(`Fetch failed on addUsers Post: ${error}`)
+      )
       this.setState({ redirectToReferrer: true });
     });
   };
+  // Handler for username input
+  handleUsernameChange = (event) => {
+    this.setState({
+      username: event.target.value
+    });
+  }
+
+  // Handler for password input
+  handlePasswordChange = (event) => {
+    this.setState({
+      password: event.target.value
+    });
+  }
 
   render() {
     const { from } = this.props.location.state || { from: { pathname: "/" } };
@@ -99,7 +152,16 @@ class Login extends React.Component {
     return (
       <div>
         <p>You must log in to view the page at {from.pathname}</p>
-        <button onClick={this.login}>Log in</button>
+        <form onSubmit={this.login}>
+          <label>Username:
+                    <input type="text" value={this.state.username} onChange={this.handleUsernameChange} />
+          </label>
+          <label>Password:
+                    <input type="password" value={this.state.password} onChange={this.handlePasswordChange} />
+          </label>
+          <button>Login</button>
+        </form>
+        {/* <button onClick={this.login}>Log in</button> */}
       </div>
     );
   }
