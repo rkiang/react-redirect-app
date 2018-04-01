@@ -1,4 +1,4 @@
-import React , { Component } from "react";
+import React, { Component } from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -110,14 +110,13 @@ class Login extends Component {
       fetch(request)
         .then(response => {
           console.log(`post was successful: ${response}`);
-          this.getUsers();
           this.setState({
             username: '',
             password: '',
           })
           if (response.status === 200) {
             console.log(`success:  ${response}`);
-            this.props.history.push('/home');
+            // this.props.history.push('/home');
           } else {
             console.log(`failure error: ${response}`);
           }
