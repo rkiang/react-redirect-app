@@ -7,6 +7,8 @@ import {
   withRouter
 } from "react-router-dom";
 
+import Dashboard from '../Dashboard/Dashboard';
+
 const url = 'http://localhost:5000/api';
 
 const AuthTest = () => (
@@ -18,12 +20,12 @@ const AuthTest = () => (
           <Link to="/public">Public Page</Link>
         </li>
         <li>
-          <Link to="/protected">Protected Page</Link>
+          <Link to="/dashboard">Dashboard</Link>
         </li>
       </ul>
       <Route path="/public" component={Public} />
       <Route path="/login" component={Login} />
-      <PrivateRoute path="/protected" component={Protected} />
+      <PrivateRoute path="/dashboard" component={Dashboard} />
     </div>
   </Router>
 );
@@ -77,7 +79,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 );
 
 const Public = () => <h3>Public</h3>;
-const Protected = () => <h3>Protected</h3>;
+// const Protected = () => <h3>Protected</h3>;
 
 class Login extends Component {
   // state = {
