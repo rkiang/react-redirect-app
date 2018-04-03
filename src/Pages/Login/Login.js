@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import Dashboard from '../Dashboard/Dashboard';
+import Register from '../Register/Register';
 
 const url = 'http://localhost:5000/api';
 
@@ -25,6 +26,7 @@ const AuthTest = () => (
       </ul>
       <Route path="/public" component={Public} />
       <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
     </div>
   </Router>
@@ -162,6 +164,7 @@ class Login extends Component {
           </label>
           <button>Login</button>
         </form>
+        <Link to="/register">Register for an account</Link>
         {/* <button onClick={this.login}>Log in</button> */}
       </div>
     );
