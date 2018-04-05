@@ -99,36 +99,36 @@ class Login extends Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
   }
 
-  login = () => {
-    userAuth.authenticate((event) => {
-      event.preventDefault();
-      const user_data = {
-        username: this.state.username,
-        password: this.state.password,
-      }
-      const request = new Request(`${url}/login`, {
-        method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(user_data)
-      });
-      fetch(request)
-        .then(response => {
-          console.log(`post was successful: ${response}`);
-          this.setState({
-            username: '',
-            password: '',
-          })
-          if (response.status === 200) {
-            console.log(`success:  ${response}`);
-            // this.props.history.push('/home');
-          } else {
-            console.log(`failure error: ${response}`);
-          }
-        },
-      ).catch(error => console.log(`Fetch failed on addUsers Post: ${error}`)
-      )
-      this.setState({ redirectToReferrer: true });
+  login = (event) => {
+    event.preventDefault();
+    const user_data = {
+      username: this.state.username,
+      password: this.state.password,
+    }
+    const request = new Request(`${url}/login`, {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify(user_data)
     });
+    fetch(request)
+      .then(response => {
+        console.log(`post was successful: ${response}`);
+        this.setState({
+          username: '',
+          password: '',
+        })
+        if (response.status === 200) {
+          console.log(`success:  ${response}`);
+          // this.props.history.push('/home');
+          userAuth.authenticate((event) => {
+            this.setState({ redirectToReferrer: true });
+          })
+        } else {
+          console.log(`failure error: ${response}`);
+        }
+      },
+    ).catch(error => console.log(`Fetch failed on addUsers Post: ${error}`)
+    )
   };
   // Handler for username input
   handleUsernameChange = (event) => {
