@@ -108,7 +108,9 @@ class Login extends Component {
     const request = new Request(`${url}/login`, {
       method: 'POST',
       headers: new Headers({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify(user_data)
+      body: JSON.stringify(user_data),
+      data: `{
+        userInfo(login: "${this.props.username}")`
     });
     fetch(request)
       .then(response => {
@@ -119,6 +121,8 @@ class Login extends Component {
         })
         if (response.status === 200) {
           console.log(`success:  ${response}`);
+          console.log(`user_data: ${user_data}`);
+          console.log("username: ", this.state.username);
           // this.props.history.push('/home');
           userAuth.authenticate((event) => {
             this.setState({ redirectToReferrer: true });
