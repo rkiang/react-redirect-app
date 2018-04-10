@@ -1,9 +1,9 @@
 const express = require('express');
 const encryptLib = require('../modules/encryption');
 const userStrategy = require('../strategies/localstrategy');
+const pool = require('../modules/pool');
 const router = express.Router();
 
-const pool = require('../modules/pool');
 
 router.get('/', (req, res) => {
     if (req.isAuthenticated()) {
