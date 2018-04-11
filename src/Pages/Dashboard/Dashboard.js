@@ -13,7 +13,7 @@ class Dashboard extends Component {
 
 
     userInfo() {
-        fetch(`${url}/dashboard`)
+        fetch(`${url}/`)
             .then(response => response.json())
             //     if (response.userInfo) {
             //         const { userInfo } = this.username;
