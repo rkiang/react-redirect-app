@@ -9,6 +9,7 @@ import {
 
 import Dashboard from '../Dashboard/Dashboard';
 import Register from '../Register/Register';
+import userService from '../../services/';
 
 const url = 'http://localhost:5000/api';
 
