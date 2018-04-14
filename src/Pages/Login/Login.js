@@ -152,6 +152,7 @@ class Login extends Component {
   render() {
     const { from } = this.props.location.state || { from: { pathname: "/" } };
     const { redirectToReferrer } = this.state;
+    const { username, password, submitted } = this.state;
 
     if (redirectToReferrer) {
       return <Redirect to={from} />;
@@ -161,12 +162,20 @@ class Login extends Component {
       <div>
         <p>You must log in to view the page at {from.pathname}</p>
         <form onSubmit={this.login}>
-          <label>Username:
+          <div className={'form-group' + (submitted && !username ? ' has-error' : '')}>
+            <label>Username:
                     <input type="text" value={this.state.username} onChange={this.handleUsernameChange} />
-          </label>
-          <label>Password:
+            </label>
+            {submitted && !username &&
+              <div className="help-block">Username is required</div>}
+          </div>
+          <div className={'form-group' + (submitted && !password ? ' has-error' : '')}>
+            <label>Password:
                     <input type="password" value={this.state.password} onChange={this.handlePasswordChange} />
-          </label>
+            </label>
+            {submitted && !password &&
+              <div className="help-block">Password is required</div>}
+          </div>
           <button>Login</button>
         </form>
         <Link to="/register">Register for an account</Link>
