@@ -9,7 +9,8 @@ import {
 
 import Dashboard from '../Dashboard/Dashboard';
 import Register from '../Register/Register';
-import userService from '../../services/';
+// import userService from '../../services/';
+import { userActions } from '../../actions';
 
 const url = 'http://localhost:5000/api';
 
